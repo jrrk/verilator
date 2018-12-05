@@ -115,7 +115,41 @@ class EmitXmlFileVisitor : public AstNVisitor {
 	outputChildrenEnd(nodep, "");
     }
     virtual void visit(AstVar* nodep) {
+        VDirection dir = nodep->declDirection();
+        AstVarType typ = nodep->varType();
 	outputTag(nodep, "");
+        puts(" dir=");
+        switch (dir)
+            {
+            case VDirection::CONSTREF: putsQuoted("constref"); break;
+            case VDirection::INOUT: putsQuoted("inout"); break;
+            case VDirection::INPUT: putsQuoted("input"); break;
+            case VDirection::NONE: putsQuoted("none"); break;
+            case VDirection::OUTPUT: putsQuoted("output"); break;
+            case VDirection::REF: putsQuoted("ref"); break;
+            default: putsQuoted("unknown"); break;
+            }
+        puts(" vartype=");
+        switch (typ)
+            {
+            case AstVarType::BLOCKTEMP: putsQuoted("blocktemp"); break;
+            case AstVarType::GPARAM: putsQuoted("gparam"); break;
+            case AstVarType::IFACEREF: putsQuoted("ifaceref"); break;
+            case AstVarType::LPARAM: putsQuoted("lparam"); break;
+            case AstVarType::MODULETEMP: putsQuoted("moduletemp"); break;
+            case AstVarType::PORT: putsQuoted("port"); break;
+            case AstVarType::STMTTEMP: putsQuoted("stmttemp"); break;
+            case AstVarType::SUPPLY0: putsQuoted("supply0"); break;
+            case AstVarType::SUPPLY1: putsQuoted("supply1"); break;
+            case AstVarType::TRI0: putsQuoted("tri0"); break;
+            case AstVarType::TRI1: putsQuoted("tri1"); break;
+            case AstVarType::TRIWIRE: putsQuoted("triwire"); break;
+            case AstVarType::VAR: putsQuoted("var"); break;
+            case AstVarType::WIRE: putsQuoted("wire"); break;
+            case AstVarType::WREAL: putsQuoted("wreal"); break;
+            case AstVarType::XTEMP: putsQuoted("xtemp"); break;
+            default: putsQuoted("unknown"); break;
+            }
 	puts(" origName="); putsQuoted(nodep->origName());
 	outputChildrenEnd(nodep, "");
     }
