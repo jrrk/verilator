@@ -121,13 +121,7 @@ class EmitXmlFileVisitor : public AstNVisitor {
 	outputTag(nodep, "");
         if (nodep->isIO()) {
             puts(" dir="); putsQuoted(kw);
-            if (vt.length() > 0) {
-                puts(" vartype="); putsQuoted(vt);
-            } else if (typ == AstVarType::PORT) {
-                puts(" vartype=port");
-            } else {
-                puts(" vartype=unknown");
-            }
+            puts(" vartype="); putsQuoted(vt.length() > 0 ? vt : typ == AstVarType::PORT ? "port" : "unknown");
         } else {
             puts(" vartype="); putsQuoted(vt.length() > 0 ? vt : kw);
         }
