@@ -118,12 +118,13 @@ class EmitXmlFileVisitor : public AstNVisitor {
         AstVarType typ = nodep->varType();
         string kw = nodep->verilogKwd();
         string vt = nodep->dtypep()->name();
-	outputTag(nodep, "");
+        outputTag(nodep, "");
         if (nodep->isIO()) {
             puts(" dir="); putsQuoted(kw);
-            puts(" vartype="); putsQuoted(vt.length() > 0 ? vt : typ == AstVarType::PORT ? "port" : "unknown");
+            puts(" vartype="); putsQuoted(!vt.empty()
+                                          ? vt : typ == AstVarType::PORT ? "port" : "unknown");
         } else {
-            puts(" vartype="); putsQuoted(vt.length() > 0 ? vt : kw);
+            puts(" vartype="); putsQuoted(!vt.empty() ? vt : kw);
         }
 	puts(" origName="); putsQuoted(nodep->origName());
 	outputChildrenEnd(nodep, "");
@@ -152,6 +153,13 @@ class EmitXmlFileVisitor : public AstNVisitor {
 	    puts(" right=\""+cvtToStr(nodep->right())+"\"");
 	}
 	puts("/>\n");
+    }
+
+    virtual void visit(AstModportVarRef* nodep) {
+        string kw = nodep->direction().xmlKwd();
+        outputTag(nodep, "");
+	puts(" direction="); putsQuoted(kw);
+        outputChildrenEnd(nodep, "");
     }
 
     // Default
