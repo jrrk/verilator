@@ -155,6 +155,14 @@ class EmitXmlFileVisitor : public AstNVisitor {
 	puts("/>\n");
     }
 
+    // Dump direction for Modport references
+    virtual void visit(AstModportVarRef* nodep) {
+        string kw = nodep->direction().xmlKwd();
+        outputTag(nodep, "");
+	puts(" direction="); putsQuoted(kw);
+        outputChildrenEnd(nodep, "");
+    }
+
     // Default
     virtual void visit(AstNode* nodep) {
 	outputTag(nodep, "");
