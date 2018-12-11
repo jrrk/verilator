@@ -144,6 +144,13 @@ class EmitXmlFileVisitor : public AstNVisitor {
         puts(" edgeType=\""+cvtToStr(nodep->edgeType().ascii())+"\"");  // IEEE vpiTopModule
         outputChildrenEnd(nodep, "");
     }
+    virtual void visit(AstModportVarRef* nodep) {
+        // Dump direction for Modport references
+        string kw = nodep->direction().xmlKwd();
+        outputTag(nodep, "");
+        puts(" direction="); putsQuoted(kw);
+        outputChildrenEnd(nodep, "");
+    }
 
     // Data types
     virtual void visit(AstBasicDType* nodep) {
@@ -154,20 +161,11 @@ class EmitXmlFileVisitor : public AstNVisitor {
 	}
 	puts("/>\n");
     }
-
-    // Dump direction for Modport references
-    virtual void visit(AstModportVarRef* nodep) {
-        string kw = nodep->direction().xmlKwd();
-        outputTag(nodep, "");
-	puts(" direction="); putsQuoted(kw);
-        outputChildrenEnd(nodep, "");
-    }
-
     virtual void visit(AstIfaceRefDType* nodep) {
-	string mpn = "";
+        string mpn;
         outputTag(nodep, "");
-	if (nodep->isModport()) mpn = nodep->modportName();
-	puts(" modportname="); putsQuoted(mpn);
+        if (nodep->isModport()) mpn = nodep->modportName();
+        puts(" modportname="); putsQuoted(mpn);
         outputChildrenEnd(nodep, "");
     }
 
