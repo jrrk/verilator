@@ -182,6 +182,22 @@ class EmitXmlFileVisitor : public AstNVisitor {
     }
 
     // Default
+    virtual void visit(AstExtend* nodep) {
+	outputTag(nodep, "");
+        puts(" width="); putsQuoted(cvtToStr(nodep->width()));
+        puts(" widthminv="); putsQuoted(cvtToStr(nodep->lhsp()->widthMinV()));
+	outputChildrenEnd(nodep, "");
+    }
+
+    // Default
+    virtual void visit(AstExtendS* nodep) {
+	outputTag(nodep, "");
+        puts(" width="); putsQuoted(cvtToStr(nodep->width()));
+        puts(" widthminv="); putsQuoted(cvtToStr(nodep->lhsp()->widthMinV()));
+        outputChildrenEnd(nodep, "");
+    }
+
+    // Default
     virtual void visit(AstNode* nodep) {
 	outputTag(nodep, "");
 	outputChildrenEnd(nodep, "");
